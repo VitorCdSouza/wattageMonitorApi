@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -15,22 +14,20 @@ import (
 const createReading = `-- name: CreateReading :one
 INSERT INTO "reading" (
   reading_wattage,
-  reading_hour,
   device_id
 ) VALUES (
-  $1, $2, $3
+  $1, $2
 )
 RETURNING id, reading_wattage, reading_hour, device_id
 `
 
 type CreateReadingParams struct {
 	ReadingWattage pgtype.Numeric `json:"reading_wattage"`
-	ReadingHour    time.Time      `json:"reading_hour"`
 	DeviceID       pgtype.Int8    `json:"device_id"`
 }
 
 func (q *Queries) CreateReading(ctx context.Context, arg CreateReadingParams) (Reading, error) {
-	row := q.db.QueryRow(ctx, createReading, arg.ReadingWattage, arg.ReadingHour, arg.DeviceID)
+	row := q.db.QueryRow(ctx, createReading, arg.ReadingWattage, arg.DeviceID)
 	var i Reading
 	err := row.Scan(
 		&i.ID,

@@ -1,10 +1,9 @@
 -- name: CreateReading :one
 INSERT INTO "reading" (
   reading_wattage,
-  reading_hour,
   device_id
 ) VALUES (
-  $1, $2, $3
+  $1, $2
 )
 RETURNING *;
 

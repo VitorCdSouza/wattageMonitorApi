@@ -18,6 +18,12 @@ func RandomInt(min, max int64) int64 {
 	return min + rand.Int63n(max - min + 1)
 }
 
+func RandomFloat64(min, max float64) float64 {
+	randomFloat := min + rand.Float64()*(max-min)
+
+    return float64(int(randomFloat*100)) / 100
+}
+
 func RandomString(n int) string {
 	var sb strings.Builder
 	k := len(alphabet)
